@@ -13,7 +13,7 @@ const STORE = {
   searchTerm: ''
 };
 
-function generateItemElement(item, itemIndex, template){
+function generateItemElement(item, itemIndex){
   return `
     <li class="js-item-index-element" data-item-index="${itemIndex}">
       <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
@@ -138,7 +138,6 @@ function handleSearchSubmit() {
 
 function updateName(newName, itemIndex) {
   STORE.items[itemIndex].name = newName;
-  console.log(STORE.items[itemIndex].name);
 }
 
 function createTitleInputField(element, itemIndex) {

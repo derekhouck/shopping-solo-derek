@@ -26,8 +26,6 @@ function generateItemElement(item, itemIndex, template){
 }
 
 function generateShoppingItemsString(shoppingList){
-  console.log('Generating shopping list elements');
-
   const items = shoppingList.map((item, index) => generateItemElement(item, index));
 
   return items.join('');
@@ -35,9 +33,7 @@ function generateShoppingItemsString(shoppingList){
 
 
 function renderShoppingList() {
-  // this function will be responsible for rendering the shopping list in
-  // the DOM
-  console.log('`renderShoppingList` ran');
+  // this function will be responsible for rendering the shopping list in the DOM
   const shoppingListItemsString = generateShoppingItemsString(STORE);
 
   //html gets targetting and insert into DOM
@@ -80,11 +76,19 @@ function handleItemCheckClicked() {
   });
 }
 
+function deleteItemFromList(itemIndex) {
+  STORE.splice(itemIndex, 1);
+}
 
 function handleDeleteItemClicked() {
-  // this function will be responsible for when users want to delete a shopping list
-  // item
-  console.log('`handleDeleteItemClicked` ran');
+  // this function will be responsible for when users want to delete a shopping list item
+  $('.js-shopping-list').on('click', '.js-item-delete', event => {
+    const itemIndex = $(event.currentTarget)
+      .closest('li')
+      .attr('data-item-index');
+    deleteItemFromList(parseInt(itemIndex, 10));
+    renderShoppingList();
+  });
 }
 
 // this function will be our callback when the page loads. it's responsible for

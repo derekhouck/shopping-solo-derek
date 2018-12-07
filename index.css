@@ -6,7 +6,7 @@
     font-family: 'Roboto', sans-serif;
   }
   
-  button, input[type="text"], .shopping-list-filters {
+  button, input[type="text"], fieldset {
     margin: 5px 0;
     padding: 5px;
   }

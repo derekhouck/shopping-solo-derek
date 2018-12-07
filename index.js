@@ -36,10 +36,8 @@ function generateShoppingItemsString(shoppingList){
 
 function hideCheckedItems(list) {
   if (list.checkedItemsHidden === true) {
-    console.log('We should hide checked items');
     return list.items.filter(item => item.checked === false);
   } else {
-    console.log('All items should show');
     return list.items;
   }
 }
@@ -119,6 +117,14 @@ function handleHideCheckedItemsToggle() {
   });
 }
 
+function handleSearchSubmit() {
+  $('#shopping-list-filters').submit(function() {
+    event.preventDefault();
+    const inquiry = $('.js-shopping-list-search').val();
+    console.log(inquiry);
+  });
+}
+
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
 // that handle new item submission and user clicks on the "check" and "delete" buttons
@@ -129,6 +135,7 @@ function handleShoppingList() {
   handleItemCheckClicked();
   handleDeleteItemClicked();
   handleHideCheckedItemsToggle();
+  handleSearchSubmit();
 }
 
 // when the page loads, call `handleShoppingList`

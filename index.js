@@ -9,7 +9,8 @@ const STORE = {
     {name: 'milk', checked: true},
     {name: 'bread', checked: false}
   ],
-  checkedItemsHidden: false
+  checkedItemsHidden: false,
+  searchTerm: ''
 };
 
 function generateItemElement(item, itemIndex, template){
@@ -34,17 +35,25 @@ function generateShoppingItemsString(shoppingList){
   return items.join('');
 }
 
-function hideCheckedItems(list) {
-  if (list.checkedItemsHidden === true) {
-    return list.items.filter(item => item.checked === false);
+function hideCheckedItems(items, isChecked) {
+  if (isChecked) {
+    return items.filter(item => item.checked === false);
   } else {
-    return list.items;
+    return items;
   }
+}
+
+function filterListByInquiry(items, inquiry) {
+  return (inquiry !== undefined) && (inquiry !== '') ? items.filter(item => item.name === inquiry) : items;
 }
 
 function filterList(list) {
   // runs through all list filters
-  return hideCheckedItems(list);
+  // Switch the order of these
+  let {items, checkedItemsHidden, searchTerm} = list;
+  let searchResults = filterListByInquiry(items, searchTerm);
+  let checkedList = hideCheckedItems(searchResults, checkedItemsHidden);
+  return checkedList;
 }
 
 function renderShoppingList() {
@@ -57,7 +66,6 @@ function renderShoppingList() {
 }
 
 function addItemToShoppingList(itemName){
-  console.log(`adding "${itemName}" to the shopping list`);
   STORE.items.push({name: itemName, checked: false});
 }
 
@@ -72,7 +80,6 @@ function handleNewItemSubmit() {
 }
 
 function toggleCheckedForListItem(itemIndex) {
-  console.log('Toggling checked property for item at index ' + itemIndex);
   STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
@@ -85,7 +92,6 @@ function getItemIndexFromElement(item) {
 
 function handleItemCheckClicked() {
   $('.js-shopping-list').on('click', '.js-item-toggle', event => {
-    console.log('`handleItemCheckClicked` ran');
     const itemIndex = getItemIndexFromElement(event.currentTarget);
     toggleCheckedForListItem(itemIndex);
     renderShoppingList();
@@ -117,11 +123,16 @@ function handleHideCheckedItemsToggle() {
   });
 }
 
+function setSearchTerm(inquiry) {
+  STORE.searchTerm =  inquiry;
+}
+
 function handleSearchSubmit() {
   $('#shopping-list-filters').submit(function() {
     event.preventDefault();
     const inquiry = $('.js-shopping-list-search').val();
-    console.log(inquiry);
+    setSearchTerm(inquiry);
+    renderShoppingList();
   });
 }
 

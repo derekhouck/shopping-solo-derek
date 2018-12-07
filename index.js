@@ -136,6 +136,39 @@ function handleSearchSubmit() {
   });
 }
 
+function updateName(newName, itemIndex) {
+  STORE.items[itemIndex].name = newName;
+  console.log(STORE.items[itemIndex].name);
+}
+
+function createTitleInputField(element, itemIndex) {
+  if ($(element).find('input').length === 0) {
+    $(element).html(`
+      <form id="${itemIndex}-title-form">
+        <input class="js-shopping-item-title-entry" type="text" value="${$(element).text()}">
+        <button type="submit">Update</button>
+      </form>
+    `);
+    $('.js-shopping-item-title-entry').focus();
+    $(element).on('submit', `#${itemIndex}-title-form`, function() {
+      event.preventDefault();
+      event.stopPropagation();
+      const newTitle = $('.js-shopping-item-title-entry').val();
+      updateName(newTitle, itemIndex);
+      renderShoppingList();
+    });
+  }
+}
+
+function handleClickItemTitle() {
+  $('.js-shopping-list').on('click', '.js-shopping-item', function() {
+    const itemTitleElement = $(event.target).closest('li').find('.shopping-item');
+    const itemIndex = getItemIndexFromElement(itemTitleElement);
+    createTitleInputField(itemTitleElement, itemIndex);
+  });
+  $('.js-shopping-list').on('focusout', '.js-shopping-item', renderShoppingList);
+}
+
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
 // that handle new item submission and user clicks on the "check" and "delete" buttons
@@ -147,6 +180,7 @@ function handleShoppingList() {
   handleDeleteItemClicked();
   handleHideCheckedItemsToggle();
   handleSearchSubmit();
+  handleClickItemTitle();
 }
 
 // when the page loads, call `handleShoppingList`

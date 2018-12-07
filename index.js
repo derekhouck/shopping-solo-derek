@@ -8,7 +8,8 @@ const STORE = {
     {name: 'oranges', checked: false},
     {name: 'milk', checked: true},
     {name: 'bread', checked: false}
-  ]
+  ],
+  checkedItemsHidden: false
 };
 
 function generateItemElement(item, itemIndex, template){
@@ -33,10 +34,25 @@ function generateShoppingItemsString(shoppingList){
   return items.join('');
 }
 
+function hideCheckedItems(list) {
+  if (list.checkedItemsHidden === true) {
+    console.log('We should hide checked items');
+    return list.items.filter(item => item.checked === false);
+  } else {
+    console.log('All items should show');
+    return list.items;
+  }
+}
+
+function filterList(list) {
+  // runs through all list filters
+  return hideCheckedItems(list);
+}
 
 function renderShoppingList() {
   // this function will be responsible for rendering the shopping list in the DOM
-  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
+  const filteredList = filterList(STORE);
+  const shoppingListItemsString = generateShoppingItemsString(filteredList);
 
   //html gets targetting and insert into DOM
   $('.js-shopping-list').html(shoppingListItemsString);
@@ -91,6 +107,18 @@ function handleDeleteItemClicked() {
   });
 }
 
+function setCheckedItemsHidden(isChecked) {
+  STORE.checkedItemsHidden = isChecked;
+}
+
+function handleHideCheckedItemsToggle() {
+  $('#hide-checked-items').click(function() {
+    const isChecked = $(this)[0].checked;
+    setCheckedItemsHidden(isChecked);
+    renderShoppingList();
+  });
+}
+
 // this function will be our callback when the page loads. it's responsible for
 // initially rendering the shopping list, and activating our individual functions
 // that handle new item submission and user clicks on the "check" and "delete" buttons
@@ -100,7 +128,7 @@ function handleShoppingList() {
   handleNewItemSubmit();
   handleItemCheckClicked();
   handleDeleteItemClicked();
-
+  handleHideCheckedItemsToggle();
 }
 
 // when the page loads, call `handleShoppingList`

@@ -1,15 +1,7 @@
 'use strict';
 
 /*global $*/
-// `STORE` is responsible for storing the underlying data
-// that our app needs to keep track of in order to work.
-//
-// for a shopping list, our data model is pretty simple.
-// we just have an array of shopping list items. each one
-// is an object with a `name` and a `checked` property that
-// indicates if it's checked off or not.
-// we're pre-adding items to the shopping list so there's
-// something to see when the page first loads.
+
 const STORE = [
   {name: 'apples', checked: false},
   {name: 'oranges', checked: false},
@@ -19,22 +11,23 @@ const STORE = [
 
 function generateItemElement(item, itemIndex, template){
   return `
-  <li class="js-item-index-element" data-item-index="${itemIndex}">
-    <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
-    <div class="shopping-item-controls">
-      <button class="shopping-item-toggle js-item-toggle">
-        <span class="button-label">check</span>
-      </button>
-      <button class="shopping-item-delete js-item-delete">
-        <span class="button-label">delete</span>
-      </button>
-    </div>
-  </li>
+    <li class="js-item-index-element" data-item-index="${itemIndex}">
+      <span class="shopping-item js-shopping-item ${item.checked ? 'shopping-item__checked' : ''}">${item.name}</span>
+      <div class="shopping-item-controls">
+        <button class="shopping-item-toggle js-item-toggle">
+          <span class="button-label">check</span>
+        </button>
+        <button class="shopping-item-delete js-item-delete">
+          <span class="button-label">delete</span>
+        </button>
+      </div>
+    </li>
   `;
 }
 
 function generateShoppingItemsString(shoppingList){
   console.log('Generating shopping list elements');
+
   const items = shoppingList.map((item, index) => generateItemElement(item, index));
 
   return items.join('');
@@ -72,7 +65,9 @@ function toggleCheckedForListItem(itemIndex) {
 }
 
 function getItemIndexFromElement(item) {
-  const itemIndexString = $(item).closest('.js-item-index-element').attr('data-item-index');
+  const itemIndexString = $(item)
+    .closest('.js-item-index-element')
+    .attr('data-item-index');
   return parseInt(itemIndexString, 10);
 }
 

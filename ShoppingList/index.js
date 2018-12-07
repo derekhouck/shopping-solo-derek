@@ -45,19 +45,24 @@ function renderShoppingList() {
   // this function will be responsible for rendering the shopping list in
   // the DOM
   console.log('`renderShoppingList` ran');
-  const shoppingListItemsString = '<li>apples</li>';
+  const shoppingListItemsString = generateShoppingItemsString(STORE);
 
   //html gets targetting and insert into DOM
   $('.js-shopping-list').html(shoppingListItemsString);
 }
 
+function addItemToShoppingList(itemName){
+  console.log(`adding "${itemName}" to the shopping list`);
+  STORE.push({name: itemName, checked: false});
+}
 
 function handleNewItemSubmit() {
   $('#js-shopping-list-form').submit(function(event) {
     event.preventDefault();
     const newItemName = $('.js-shopping-list-entry').val();
-    console.log(newItemName);
     $('.js-shopping-list-entry').val('');
+    addItemToShoppingList(newItemName);
+    renderShoppingList();
   });
 }
 

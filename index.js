@@ -2,12 +2,14 @@
 
 /*global $*/
 
-const STORE = [
-  {name: 'apples', checked: false},
-  {name: 'oranges', checked: false},
-  {name: 'milk', checked: true},
-  {name: 'bread', checked: false}
-];
+const STORE = {
+  items: [
+    {name: 'apples', checked: false},
+    {name: 'oranges', checked: false},
+    {name: 'milk', checked: true},
+    {name: 'bread', checked: false}
+  ]
+};
 
 function generateItemElement(item, itemIndex, template){
   return `
@@ -34,7 +36,7 @@ function generateShoppingItemsString(shoppingList){
 
 function renderShoppingList() {
   // this function will be responsible for rendering the shopping list in the DOM
-  const shoppingListItemsString = generateShoppingItemsString(STORE);
+  const shoppingListItemsString = generateShoppingItemsString(STORE.items);
 
   //html gets targetting and insert into DOM
   $('.js-shopping-list').html(shoppingListItemsString);
@@ -42,7 +44,7 @@ function renderShoppingList() {
 
 function addItemToShoppingList(itemName){
   console.log(`adding "${itemName}" to the shopping list`);
-  STORE.push({name: itemName, checked: false});
+  STORE.items.push({name: itemName, checked: false});
 }
 
 function handleNewItemSubmit() {
@@ -57,7 +59,7 @@ function handleNewItemSubmit() {
 
 function toggleCheckedForListItem(itemIndex) {
   console.log('Toggling checked property for item at index ' + itemIndex);
-  STORE[itemIndex].checked = !STORE[itemIndex].checked;
+  STORE.items[itemIndex].checked = !STORE.items[itemIndex].checked;
 }
 
 function getItemIndexFromElement(item) {
@@ -77,7 +79,7 @@ function handleItemCheckClicked() {
 }
 
 function deleteItemFromList(itemIndex) {
-  STORE.splice(itemIndex, 1);
+  STORE.items.splice(itemIndex, 1);
 }
 
 function handleDeleteItemClicked() {

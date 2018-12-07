@@ -83,9 +83,7 @@ function deleteItemFromList(itemIndex) {
 function handleDeleteItemClicked() {
   // this function will be responsible for when users want to delete a shopping list item
   $('.js-shopping-list').on('click', '.js-item-delete', event => {
-    const itemIndex = $(event.currentTarget)
-      .closest('li')
-      .attr('data-item-index');
+    const itemIndex = getItemIndexFromElement(event.currentTarget);
     deleteItemFromList(parseInt(itemIndex, 10));
     renderShoppingList();
   });
